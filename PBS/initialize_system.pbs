@@ -1,0 +1,21 @@
+#!/bin/sh -l
+#PBS -j oe
+#PBS -N 'initialize_system'
+#PBS -l nodes=1:ppn=16
+#PBS -l walltime=96:00:00
+#PBS -q batch
+#PBS -M dpert@umich.edu
+#PBS -m abe 
+#PBS -e /home/danielpert/terminal-group-screening-Jul2020/PBS/initialize_system_error.txt
+#PBS -o /home/danielpert/terminal-group-screening-Jul2020/PBS/initialize_system_output.txt
+
+cd /home/danielpert/terminal-group-screening-Jul2020  # This is the location wherever you called the qsub command
+echo `cat $PBS_NODEFILE`
+module load anaconda/5.1.0
+source activate imodels37
+# Run the command, either python code or simulation
+python src/project.py submit -o initialize_system --template rahman.sh --walltime 96 --nn 1 --bundle 20 -n 80
+
+
+
+

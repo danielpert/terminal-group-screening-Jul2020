@@ -1,0 +1,6 @@
+hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums hulk.mums
+/var/spool/torque/mom_priv/jobs/1913.hulk.mums.SC: 15: /var/spool/torque/mom_priv/jobs/1913.hulk.mums.SC: source: not found
+Traceback (most recent call last):
+  File "src/project.py", line 8, in <module>
+    import signac
+ModuleNotFoundError: No module named 'signac'

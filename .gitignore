@@ -1,0 +1,7 @@
+.DS_Store
+.ipynb_checkpoints/*
+workspace/*
+signac.rc
+signac_statepoints.json
+signac_project_document.json
+init.log

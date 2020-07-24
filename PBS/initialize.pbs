@@ -1,0 +1,19 @@
+#!/bin/sh -l
+#PBS -j oe
+#PBS -N 'gmx_shear'
+#PBS -l nodes=1:ppn=16
+#PBS -l walltime=96:00:00
+#PBS -q batch
+#PBS -M dpert@umich.edu
+#PBS -m abe 
+#PBS -e /home/danielpert/terminal-group-screening-Jul2020/PBS/initialize_error.txt
+#PBS -o /home/danielpert/terminal-group-screening-Jul2020/PBS/initialize_output.txt
+
+cd /home/danielpert/terminal-group-screening-Jul2020  # This is the location wherever you called the qsub command
+echo `cat $PBS_NODEFILE`
+# Run the command, either python code or simulation
+python src/init.py -n 5 12345
+
+
+
+

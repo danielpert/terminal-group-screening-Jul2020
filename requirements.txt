@@ -1,0 +1,12 @@
+mbuild
+py3dmol
+foyer
+signac
+signac-flow
+mdanalysis
+lammps
+gromacs=2018.4
+numpy
+matplotlib
+pymbar
+atools
