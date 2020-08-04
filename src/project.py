@@ -361,7 +361,7 @@ def fix_overlaps(job):
     cmds = pathlib.Path(
         signac.get_project().root_directory() + "/src/util/mdp_files"
     )
-    return "{} lmp_mpi -in {}/in.minimize -log {}/minimize.log".format(
+    return "cd {}; lmp -in {}/in.minimize -log {}/minimize.log".format(
         job.workspace(), str(cmds.absolute()), job.workspace()
     )
 
