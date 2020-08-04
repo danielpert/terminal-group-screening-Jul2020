@@ -1,7 +1,7 @@
 import mbuild as mb
 
-from atools.lib.moieties.one_port.nitro import Nitro
-from atools.lib.moieties.one_port.phenyl import Phenyl
+from .nitro import Nitro
+from .phenyl import Phenyl
 
 
 class Nitrophenyl(mb.Compound):

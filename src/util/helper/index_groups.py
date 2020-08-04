@@ -3,8 +3,7 @@ from __future__ import division
 import numpy as np
 
 
-def generate_index_groups(system, terminal_group, freeze_thickness=0.5):
-    backbone_set = {'Alkylsilane'}
+def generate_index_groups(system, terminal_groups, freeze_thickness=0.5):
     bounding_box = system.boundingbox
     bot_of_box = bounding_box.mins[2]
     top_of_box = bounding_box.maxs[2]
@@ -22,18 +21,18 @@ def generate_index_groups(system, terminal_group, freeze_thickness=0.5):
         z = particle.pos[2]
         ancestors = [ancestor.name for ancestor in particle.ancestors()]
         if z > middle:
-            if backbone_set & set(ancestors):
+            if 'Alkylsilane' in ancestors:
                 top_chains.append(i + 1)
-                if terminal_group.title() in ancestors:
+                if any([tg.title() in ancestors for tg in terminal_groups]):
                     top_termini.append(i + 1)
             else:
                 top_surface.append(i + 1)
                 if z > top_of_box - freeze_thickness:
                     top_frozen.append(i + 1)
         else:
-            if backbone_set & set(ancestors):
+            if 'Alkylsilane' in ancestors:
                 bottom_chains.append(i + 1)
-                if terminal_group.title() in ancestors:
+                if any([tg.title() in ancestors for tg in terminal_groups]):
                     bottom_termini.append(i + 1)
             else:
                 bottom_surface.append(i + 1)

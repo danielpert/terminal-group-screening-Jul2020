@@ -821,7 +821,7 @@
   <Type class="OG" def="[O;X2]([Si;%opls_1002])[Si;%opls_1003]" element="O" mass="15.9994" name="opls_1007" overrides="opls_1001" />
   <Type class="OH" def="[O;X2]([Si;%opls_1002])H" element="O" mass="15.9994" name="opls_1008" overrides="opls_154,opls_1001" />
   <Type class="HO" def="[H;X1](O[Si;%opls_1002])" element="H" mass="1.00800" name="opls_1009" overrides="opls_155" />
-  <Type class="EP" element="_EP" mass="0.00" name="opls_1010" />
+  <Type name="opls_1010" class="EP" element="_EP" mass="0.00"/>
   <Type class="C1011" def="[C;X4](C)(H)(H)[N;%opls_1012]" desc="nitroso alpha carbon" element="C" mass="12.011000" name="opls_1011" />
   <Type class="N1012" def="[N;X2](C)([O;X1])" desc="nitroso nitrogen" element="N" mass="14.007000" name="opls_1012" />
   <Type class="O1013" def="[O;X1][N;%opls_1012]" desc="nitroso oxygen" element="O" mass="15.999000" name="opls_1013" />
@@ -3191,9 +3191,6 @@
   <Improper class1="CQ" class2="" class3="" class4="" k1="4.60240" periodicity1="2" phase1="3.141592653589793" />
   <Improper class1="CS" class2="" class3="" class4="" k1="4.60240" periodicity1="2" phase1="3.141592653589793" />
   <Improper class1="C*" class2="" class3="" class4="" k1="4.60240" periodicity1="2" phase1="3.141592653589793" />
- <Improper class1="CT" class2="CT" class3="C1011" class4="HC" k1="0.000000" k2="0.000000" k3="0.000000" k4="0.000000" periodicity1="1" periodicity2="2" periodicity3="3" periodicity4="4" phase1="0.00" phase2="3.141592653589793" phase3="0.00" phase4="3.141592653589793" />
-<Improper class1="C1011" class2="HC" class3="CT" class4="N1012" k1="0.000000" k2="0.000000" k3="0.000000" k4="0.000000" periodicity1="1" periodicity2="2" periodicity3="3" periodicity4="4" phase1="0.00" phase2="3.141592653589793" phase3="0.00" phase4="3.141592653589793" />
-<Improper class1="CT" class2="CT" class3="C1014" class4="HC" k1="0.000000" k2="0.000000" k3="0.000000" k4="0.000000" periodicity1="1" periodicity2="2" periodicity3="3" periodicity4="4" phase1="0.00" phase2="3.141592653589793" phase3="0.00" phase4="3.141592653589793" />
 </PeriodicTorsionForce>
  <NonbondedForce coulomb14scale="0.5" lj14scale="0.5">
   <Atom charge="0.5" epsilon="0.43932" sigma="0.375" type="opls_001" />
@@ -4017,12 +4014,12 @@
   <Atom charge="-0.215" epsilon="0.71128" sigma="0.3" type="opls_1007" />
   <Atom charge="-0.215" epsilon="0.71128" sigma="0.3" type="opls_1008" />
   <Atom charge="0.215" epsilon="0.0" sigma="0.0" type="opls_1009" />
-  <Atom charge="0.0" epsilon="0.0" sigma="0.0" type="opls_1010" />
- <Atom charge="-0.205100" epsilon="0.276144" sigma="0.350000" type="opls_1011" />
-<Atom charge="0.081200" epsilon="0.711280" sigma="0.325000" type="opls_1012" />
-<Atom charge="-0.204000" epsilon="0.711280" sigma="0.296000" type="opls_1013" />
-<Atom charge="-0.221500" epsilon="0.276144" sigma="0.330000" type="opls_1014" />
-<Atom charge="-0.274100" epsilon="0.276144" sigma="0.330000" type="opls_1015" />
-<Atom charge="0.271200" epsilon="0.125520" sigma="0.250000" type="opls_1016" />
-</NonbondedForce>
+  <Atom type="opls_1010" charge="0.0" sigma="0.0" epsilon="0.0"/>
+  <Atom charge="-0.205100" epsilon="0.276144" sigma="0.350000" type="opls_1011" />
+  <Atom charge="0.081200" epsilon="0.711280" sigma="0.325000" type="opls_1012" />
+  <Atom charge="-0.204000" epsilon="0.711280" sigma="0.296000" type="opls_1013" />
+  <Atom charge="-0.221500" epsilon="0.276144" sigma="0.330000" type="opls_1014" />
+  <Atom charge="-0.274100" epsilon="0.276144" sigma="0.330000" type="opls_1015" />
+  <Atom charge="0.271200" epsilon="0.125520" sigma="0.250000" type="opls_1016" />
+ </NonbondedForce>
 </ForceField>

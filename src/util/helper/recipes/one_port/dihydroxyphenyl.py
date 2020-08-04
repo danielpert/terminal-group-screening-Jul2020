@@ -4,8 +4,8 @@ import mbuild as mb
 from mbuild.lib.atoms.h import H
 from mbuild.lib.moieties.ch2 import CH2
 
-from atools.lib.moieties.one_port.oh import OH
-from atools.lib.moieties.one_port.phenyl_unfunctionalized import PhenylUnfunctionalized
+from .oh import OH
+from .phenyl_unfunctionalized import PhenylUnfunctionalized
 
 
 class DihydroxyPhenyl(mb.Compound):

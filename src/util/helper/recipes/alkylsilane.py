@@ -2,7 +2,7 @@ import mbuild as mb
 from .alkane import Alkane
 from mbuild.lib.moieties import Silane
 from .one_port import Acetyl, Acetylene, Amino, Biphenyl, Carboxyl, Cyano, \
-    Cyclopropyl, Ethylene, Fluorophenyl, Formyl, Hydroxyl, Isopropyl, \
+    Cyclopropyl, DihydroxyPhenyl, Ethylene, Fluorophenyl, Formyl, Hydroxyl, Isopropyl, \
     Methoxy, Methyl, Nitro, Nitrophenyl, Pentafluorophenyl, \
     Perfluoromethyl, Phenyl, Pyrrole, Triazole, Difluoromethyl, Phenol, \
     Toluene, Benzoicacid, Isopropylbenzene, Amide, Cyclohexyl, Sulfhydryl, \
@@ -30,7 +30,7 @@ class Alkylsilane(mb.Compound):
         terminal_group_dict = \
             {'acetyl':Acetyl, 'acetylene':Acetylene, 'amino':Amino, 'biphenyl':Biphenyl,
              'carboxyl':Carboxyl, 'cyano':Cyano, 'cyclopropyl':Cyclopropyl,
-             'ethylene':Ethylene, 'fluorophenyl':Fluorophenyl,
+             'dihydroxyphenyl':DihydroxyPhenyl, 'ethylene':Ethylene, 'fluorophenyl':Fluorophenyl,
              'formyl':Formyl, 'hydroxyl':Hydroxyl, 'isopropyl':Isopropyl,
              'methoxy':Methoxy, 'methyl':Methyl, 'nitro':Nitro,
              'nitrophenyl':Nitrophenyl, 'pentafluorophenyl':

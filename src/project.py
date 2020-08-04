@@ -17,6 +17,7 @@ from mbuild.lib.atoms import H
 from util.helper.functions import system_builder
 from util.helper.recipes import Alkylsilane, DualSurface, SilicaInterface, SurfaceMonolayer
 from util.helper.index_groups import generate_index_groups
+from util.helper.fileio import write_monolayer_ndx, save_pattern, read_ndx
 
 
 """
@@ -83,33 +84,7 @@ class SimpleProject(flow.environment.DefaultTorqueEnvironment):
             "--walltime", type=float, help="walltime"
         )
 
-'''
-# subclass titan env
-class nti112TitanProject(environments.incite.TitanEnvironment):
-    template = "nti112titan.sh"
-
-    @classmethod
-    def add_args(cls, parser):
-        super(environments.incite.TitanEnvironment, cls).add_args(parser)
-        parser.add_argument(
-            "--gromacs", action="store_true", help="import gromacs"
-        )
-        parser.add_argument(
-            "--lammps", action="store_true", help="Import lammps"
-        )
-        parser.add_argument(
-            "--debug_q", action="store_true", help="run on debug queue"
-        )
-        parser.add_argument(
-            "--wraprun", action="store_true", help="Use wraprun jobs"
-        )
-        parser.add_argument(
-            "--concat_trj",
-            action="store_true",
-            help="Concatenating shear production trajectories?",
-        )
-'''
-
+        
 class Project(FlowProject):
     pass
 
@@ -211,7 +186,6 @@ def cof_calculated(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.post.isfile("init.top")
 @Project.post.isfile("init.gro")
 @Project.post.isfile("init.lammps")
@@ -318,7 +292,7 @@ def initialize_system(job):
     # path for project root dir
     proj = signac.get_project()
     forcefield_filepath = pathlib.Path(
-        proj.root_directory() + "./src/util/forcefield/oplsaa.xml"
+        proj.root_directory() + "/src/util/forcefield/oplsaa.xml"
     )
     # change into job directory
     _switch_dir(job)
@@ -335,7 +309,7 @@ def initialize_system(job):
             box=None, residues=["Top", "Bottom"]
         )
         ff = Forcefield(forcefield_files=forcefield_filepath.as_posix())
-        structure = ff.apply(structure)
+        structure = ff.apply(structure, verbose=True)
         structure.combining_rule = "geometric"
 
         structure.save("init.top", overwrite=True)
@@ -379,7 +353,6 @@ def create_system_ndx(job):
 '''
 
 @Project.operation
-@flow.directives(nranks=16)
 @Project.pre(is_initialized)
 @Project.pre.after(initialize_system)
 @Project.post.isfile("minimize.xtc")
@@ -394,7 +367,6 @@ def fix_overlaps(job):
 
 
 @Project.operation
-@flow.directives(nranks=16) # set to 16 for node calculation
 @Project.pre(overlaps_fixed)
 @Project.pre.after(fix_overlaps)
 @Project.post.isfile("minimize.gro")
@@ -405,7 +377,6 @@ def lmp_to_gmx(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @Project.pre(converted_lmp)
 @Project.pre.after(lmp_to_gmx)
 @Project.post.isfile("em.tpr")
@@ -421,7 +392,6 @@ def em_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre(is_em_grompp)
 @Project.pre.after(em_grompp)
@@ -433,7 +403,6 @@ def mdrun_em(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @Project.pre.after(mdrun_em)
 @Project.post.isfile("nvt.tpr")
 @flow.cmd
@@ -453,7 +422,6 @@ def nvt_equil_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre(is_nvt_grompp)
 @Project.pre.after(nvt_equil_grompp)
@@ -465,7 +433,6 @@ def mdrun_nvt(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre.after(mdrun_nvt)
 @Project.post.isfile("compress.tpr")
 @flow.cmd
@@ -486,7 +453,6 @@ def compress_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre.after(compress_grompp)
 @Project.post.isfile("compress.gro")
@@ -497,7 +463,6 @@ def mdrun_compress(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre.after(mdrun_compress)
 @Project.post.isfile("shear_5nN.tpr")
 @flow.cmd
@@ -518,7 +483,6 @@ def shear_5nN_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre.after(shear_5nN_grompp)
 @Project.post(shear_5nN_completed)
@@ -532,7 +496,6 @@ def mdrun_shear_5nN(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre.after(mdrun_compress)
 @Project.post.isfile("shear_15nN.tpr")
 @flow.cmd
@@ -553,7 +516,6 @@ def shear_15nN_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre(is_nvt_grompp)
 @Project.pre.after(shear_15nN_grompp)
@@ -568,7 +530,6 @@ def mdrun_shear_15nN(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @Project.pre.after(mdrun_compress)
 @Project.post.isfile("shear_25nN.tpr")
 @flow.cmd
@@ -589,7 +550,6 @@ def shear_25nN_grompp(job):
 
 
 @Project.operation
-@flow.directives(nranks=16)
 @flow.directives(ngpu=1)
 @Project.pre(is_nvt_grompp)
 @Project.pre.after(shear_25nN_grompp)
@@ -604,7 +564,6 @@ def mdrun_shear_25nN(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_5nN_completed)
 @Project.post(cof_calculated)
 @flow.cmd
@@ -615,7 +574,6 @@ def shear_5nN_xtc_concat(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_5nN_completed)
 @Project.pre.after(mdrun_shear_5nN)
 @Project.post(cof_calculated)
@@ -627,7 +585,6 @@ def shear_5nN_trr_concat(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_15nN_completed)
 @Project.pre.after(mdrun_shear_15nN)
 @Project.post(cof_calculated)
@@ -639,7 +596,6 @@ def shear_15nN_xtc_concat(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_15nN_completed)
 @Project.pre.after(mdrun_shear_15nN)
 @Project.post(cof_calculated)
@@ -651,7 +607,6 @@ def shear_15nN_trr_concat(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_25nN_completed)
 @Project.pre.after(mdrun_shear_25nN)
 @Project.post(cof_calculated)
@@ -663,7 +618,6 @@ def shear_25nN_xtc_concat(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(shear_25nN_completed)
 @Project.pre.after(mdrun_shear_15nN)
 @Project.post(cof_calculated)
@@ -713,7 +667,6 @@ def mdanalysis_concat_trr(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre.after(mdanalysis_concat_trr)
 @Project.post(cof_calculated)
 @Project.post(friction_calculated)
@@ -732,7 +685,6 @@ def calc_friction_system(job):
 
 
 @Project.operation
-@flow.directives(nranks=1)
 @Project.pre(friction_calculated)
 @Project.pre.after(calc_friction_system)
 @Project.post(cof_calculated)

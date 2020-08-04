@@ -5,3 +5,12 @@ signac.rc
 signac_statepoints.json
 signac_project_document.json
 init.log
+src/util/helper/recipes/one_port/__pycache__/*
+.bundles/*
+.gitignore:Zone.Identifier
+.signac_sp_cache.json.gz
+src/util/forcefield/Users/
+src/util/forcefield/oplsaam.ff/
+ipynb/*
+*/__pycache__/*
+templates/hulk_output.txt
