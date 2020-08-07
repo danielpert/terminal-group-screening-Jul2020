@@ -9,7 +9,7 @@ This signac project involves the molecular simulation of two functionalized mono
 
 However, this project is an extension of the previous perojects in that is uses the following new terminal groups:
 * cyclohexyl
-* nitroso
+* sulfhydryl
 * acetylene
 
 This workspace is meant to provide simulation data for these groups not screened previously, and not fed to the machine learning model. (https://github.com/daico007/tribology-machine-learning) Using this data, along with RDKit to determine the molecular descriptors, this will allow for the generalization ability of the random forest and neural networks to new data.

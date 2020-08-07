@@ -18,7 +18,7 @@ logging.basicConfig(filename='init.log', filemode='w', level=logging.INFO)
 New terminal groups (11)
 -----------------------------
 '''
-terminal_groups_new = ['cyclohexyl', 'acetylene', 'nitroso']
+terminal_groups_new = ['cyclohexyl', 'acetylene', 'sulfhydryl']
 #    ['amide', 'biphenyl', 'cyclohexyl', 'dihydroxyphenyl',
 #     'formyl', 'nitroso', 'pentafluorophenyl', 'sulfhydryl',
 #     'triazole', 'benzoicacid', 'isopropylbenzene']
